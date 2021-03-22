@@ -1,0 +1,209 @@
+
+
+    <div class="row">
+      <div class="col-sm-12">
+<!-- Hover table card start -->
+
+<app-card [title]="'categories'" [classHeader]="true" [blockClass]="'table-border-style'">
+  <span class="code-header">All Categories Detail</span>
+
+  <div class="row">
+    <div class="col-sm-12" >
+      <div class="col-sm-2" style="float: right;padding-bottom: 8px;">
+       
+         
+     </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row" [hidden]="!triggerSubCate" [formGroup]="SubCategoryForm" >
+        <div class="col-md-1">
+          
+        </div>
+            <div class="col-md-6">
+              <input type="text" style="font-weight:bold;" placeholder="Sub Category Name" formControlName="subcategoreyName" class="form-control" >
+            </div>
+            <div class="col-md-4">
+              <input type="submit" value="Save" style="border-radius:5px ;    padding: 1%;"  class="btn btn-success" (click)=submitsubcategory() >
+            </div>
+            
+      </div>
+      <div class="row" [hidden]="categorytrigger" [formGroup]="SubCategoryForm" >
+   
+            
+            <div class="col-md-11">
+              
+              <input type="submit"  value="Add Category" style="border-radius:5px ;    padding: 1%;"  class="btn btn-success pull-right" (click)=Addcategory() >
+            </div>
+            
+      </div>
+      <div class="row" [hidden]="!categorytrigger" [formGroup]="CategoryForm" >
+       
+        <div class="col-md-1">
+          
+        </div>
+        <div class="col-md-6">
+          <input type="text" style="font-weight:bold;" placeholder="Category Name" [hidden]="triggerSubCate"  formControlName="categoreyName" class="form-control" >
+        </div>
+            <div class="col-md-4">
+              <!-- <img src="assets/icon/AddIcon.png" style="color:greenyellow" > -->
+              <button type="submit" style="border-radius:5px ;    padding: 1%;"    [hidden]="triggerSubCate" class="btn btn-success" (click)=submitcategory()>Save</button>
+<br>
+            </div>
+            
+      </div>
+
+
+      </div>
+      <div class="col-md-3">
+
+ 
+    </div>
+  </div>
+
+  <div class="table-responsive"style="padding: 2%;">
+    <table class="table table-hover" id="customers">
+      <thead>
+      <tr>
+        <th (click)="Sort('i')">#<i class="fa fa-sort"></i></th>
+        <th (click)="Sort('categoreyName')">Category Name<i class="fa fa-sort"></i></th>
+        <th (click)="Sort('subcategoreyName')">Sub Categories<i class="fa fa-sort"></i></th>
+     
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let obj of CategoriesList |orderBy:key :reverse | paginate:{itemsPerPage:10,currentPage:p}; let i=index;" [formGroup]="CategoryForm" >
+        <td style="width: 2px;">{{i+1}}</td>
+        
+        <td>
+          <span [hidden]="obj.inedit">{{obj.categorey.categoreyName}} &nbsp;&nbsp;&nbsp;</span>
+
+          <p class="fa fa-edit" style="font-size: 20px;color:blue" [hidden]="obj.inedit" title="Edit or Update"  (click)="onEditClick($event, i,obj.categorey.categoreyId)" data-toggle="modal"
+          data-target="#editModal">&nbsp;</p> 
+          <img  [src]="ImagebaseUrl+obj.categorey.category_Image" style="float:right" height="50" width="50" >     
+          <div class="form-group">
+              <input type="file" name="image" (change)="fileProgress($event,i,obj.categorey.categoreyId,obj.categorey.categoreyName)" />
+          </div>
+          <div class="mb-3" *ngIf="uploadedFilePath">
+            {{uploadedFilePath}}
+        </div>
+       
+
+       
+        <div class="row">
+          <div class="col-md-8" [hidden]="!obj.image">
+            <div class="image-preview mb-3" *ngIf="previewUrl " >
+        
+              <img [src]="previewUrl" height="50" width="50" /> <span>&nbsp;&nbsp;</span>
+              <button class="btn btn-primary" style="border-radius:5px ;    padding: 1%;" (click)="onSubmit(obj.categorey.categoreyId)">Submit</button>
+              <!-- <button class="btn btn-danger" style="border-radius:5px ;    padding: 1%;" (click)="CancelImage(i)">Cancel</button>
+                        -->
+          </div>
+          </div>
+        </div>
+ 
+        
+          <div [hidden]="!obj.inedit" class="row">
+            <!-- <input type="hidden" formControlName="categoreyName"> -->
+            <div class="col-md-7">
+              <input type="text"    class="form-control"  formControlName="categoreyName" style="font-weight:bold;" size="" wid value="{{obj.categorey.categoreyName}}"/><span>&nbsp;&nbsp;</span>
+          
+            </div>
+            <div class="col-md-4">
+              <input type="submit"  style="border-radius:5px ;    padding: 4%;" value="Update"  class="btn btn-success" (click)=UpdateCategory() /><span>&nbsp;&nbsp;</span>
+              <input type="submit"  style="border-radius:5px ;    padding: 4%;" value="Cancel"  class="btn btn-danger" (click)=Cancel() /><span>&nbsp;&nbsp;</span>
+         
+            </div>
+          
+          </div>
+ </td>
+          <td>
+            <div *ngIf="obj.subcategorey !=0 ; else elseBlock" [formGroup]="SubCategoryForm" >
+              <span>
+                <span *ngFor="let item of obj.subcategorey"  >
+                  <div>
+                            <ul >
+                              <li style="font-weight:bold;"><span style="font-size:20px">&#187;</span> {{item.subcategoreyName}}    <p class="fa fa-edit" style="font-size: 20px;color:blue" [hidden]="obj.ineditsubcat" title="Edit or Update"  (click)="onSubCatEditClick($event, i,item.subCategoreyId,item.categoreyId,item.subcategoreyName)" data-toggle="modal"
+                                data-target="#editModal">&nbsp; </p>  <br>
+                                <img [src]="ImagebaseUrl+item.subCategoryImage" style="float:right;"  height="50" width="50"  > <br> 
+                                
+                                <div class="form-group">
+                                  <label for="file">Choose File</label><br /> <input type="file" id="file" (change)="uploadFiles($event,item.subCategoreyId)">
+                                </div>
+                            
+                  
+                                <br>
+                          </li>
+                            </ul>
+                   
+
+                     
+                  </div>
+          
+              </span>
+            
+              </span>
+              <div class="row">
+                     <div class="col-md-8">
+                      <input type="text"   class="form-control" [hidden]=" !obj.ineditsub"  formControlName="subcategoreyName" /><span>&nbsp;&nbsp;</span>
+                      <input type="text"   class="form-control" [hidden]=" !obj.ineditsub"  formControlName="subcategoreyName" /><span>&nbsp;&nbsp;</span>
+                  
+                     </div>
+                     <div class="col-md-4">
+                      <input type="submit" style="border-radius:5px ;    padding: 4%;"  class="btn btn-success" [hidden]=" !obj.ineditsub" (click)=UpdateSubCategory() /><span>&nbsp;&nbsp;</span>
+                      <input type="submit"  style="border-radius:5px ;    padding: 4%;" value="Cancel" [hidden]=" !obj.ineditsub"   class="btn btn-danger" (click)=Cancel() /><span>&nbsp;&nbsp;</span>
+         
+                    </div>
+              </div>
+              
+          
+            <span class="fa fa-plus " title="Add" (click)="AddSubCategory($event, i,obj.categorey.categoreyId)" [hidden]="triggerSubCate" style="font-size:30px;color:green;float:right"></span>
+           
+                
+            
+             
+      
+            </div>
+            <ng-template #elseBlock>
+            
+              <span class="fa fa-plus " title="Add" (click)="AddSubCategory($event, i,obj.categorey.categoreyId)" [hidden]="triggerSubCate" style="font-size:30px;color:green;float:right"></span>
+         
+           </ng-template>
+        </td>
+
+      
+       <!-- <td> 
+       
+  
+          <div class="row">
+ 
+        <div style="padding: 4px;"> -->
+          <!-- <p class="fa fa-edit" style="font-size: 20px;color:blue" [hidden]="obj.inedit" title="Edit or Update"  (click)="onEditClick($event, i,obj.category_Id)" data-toggle="modal"
+          data-target="#editModal">&nbsp;</p>
+          <p class="fa fa-save"  [hidden]="!obj.inedit" title="Save Changes" style="font-size: 20px;color:green"  (click)="UpdateCategory()">&nbsp;</p>
+          <p class="fa fa-close"  [hidden]="!obj.inedit" title="Cancel" style="font-size: 20px;color:brown(247, 241, 241)" (click)="onCancelClick(i)" data-toggle="modal"
+        data-target="#editModal"> &nbsp;</p>
+          <i class="fa fa-upload" aria-hidden="true" style="font-size:18px;color:rgb(0, 47, 255)" title="Upload Image"  (click)="openLg(uploadfilecontent,obj.category_Id)">&nbsp;</i> 
+          <i class="fa fa-trash" aria-hidden="true" style="font-size:18px;color:rgb(255, 0, 0)" title="Delete"  (click)="openLg()"(click)="onCancelClick(i)" data-toggle="modal"
+          data-target="#editModal"></i> -->
+        <!-- </div>
+    </div></td> -->
+      </tr>
+     
+      </tbody>
+    
+    </table>
+    <div class="row">
+      <div style="right: 10%;">
+        <pagination-controls (pageChange)="p=$event"></pagination-controls>
+    </div>
+  </div>
+  </div>
+</app-card>
+<!-- Hover table card end -->
+      </div>
+    </div>
+  
+
+  

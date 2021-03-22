@@ -1,0 +1,51 @@
+<div class="row">
+<div class="col-md-12">
+  <div class="container ">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="col-md-6 offset-md-3">
+          <h3>Choose File</h3>           
+          <div class="form-group">
+              <input type="file" name="image" (change)="fileProgress($event)" />
+          </div>
+          
+         
+
+          <div class="mb-3" *ngIf="uploadedFilePath">
+              {{uploadedFilePath}}
+          </div>
+         
+          <!-- <div class="form-group">
+              <button class="btn btn-primary"  (click)="onSubmit()">Submit</button>
+          </div> -->
+      </div>
+      </div>
+      <div class="col-md-8 fa-pull-right">
+        <div class="image-preview mb-3" *ngIf="previewUrl">
+          <img [src]="previewUrl" height="200" />               
+      </div>
+      </div>
+       
+    </div>
+    
+     
+ 
+  </div>
+</div>
+</div>
+
+<div *ngFor="let item of bannerslist">
+  <div class="responsive">
+    <div class="gallery">
+      <div class="container">
+        <!-- <img src="/Content/BannerImage/{{item.bannerImagePath}}" > -->
+        <img src="assets/images/avatar-3.jpg" alt="Avatar" class="image" style="width:100%">
+        <div class="middle">
+        <button  (click)="clickFunction(item.bannerId)" class="text">Remove</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

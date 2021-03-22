@@ -1,0 +1,110 @@
+
+
+    <div class="row">
+      <div class="col-sm-12">
+<!-- Hover table card start -->
+<app-card [title]="'Users'" [classHeader]="true" [blockClass]="'table-border-style'">
+  <span class="code-header">All Users Detail</span>
+
+  <div class="row">
+    <div class="col-sm-3" >
+    
+    </div>
+    <div class="col-sm-9" >
+              <div class="row">
+                <div class="col-md-4">
+                  <label>By Email</label>
+                    <input style="text" [(ngModel)]="Useremail" (ngModelChange)="FilterByEmail()" class="form-control" placeholder="User Email">
+                </div>
+                <div class="col-md-4">
+                  <label>By Status</label>
+                  <select class="custom-select"#statusselect
+                  (change)='FilterByStatus(statusselect.value)' >
+                    <option selected value="0">All</option>
+                   <option value="1">Active Users</option>
+                   <option value="2">Non Active Users</option>
+                 
+              
+                  </select>
+                    
+                </div>
+                <div class="col-md-3">
+                  <label>By Type</label>
+                  <select class="custom-select"#typeselect
+                  (change)='FilterByType(typeselect.value)' >
+                    <option selected value="0">All</option>
+                   <option value="1">Buyer</option>
+                   <option value="2">Buyer/Seller</option>
+                 
+              
+                  </select>
+                    
+                </div>
+                <div class="col-md-1">
+                 
+                    
+                </div>
+              </div>
+    </div>
+  </div>
+  <div class="table-responsive" style="padding:2%;">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th (click)="Sort('id')">#<i class="fa fa-sort"></i></th>
+        <th (click)="Sort('user_Name')">User Name<i class="fa fa-sort"></i></th>
+        <th (click)="Sort('name')">Name<i class="fa fa-sort"></i></th>
+        <th (click)="Sort('gender')">Gender<i class="fa fa-sort"></i></th>
+        <th (click)="Sort('email')">Email<i class="fa fa-sort"></i></th>
+        <th (click)="Sort('type')"> User Type<i class="fa fa-sort"></i></th>
+        <th (click)="Sort('description')">Actions<i class="fa fa-sort"></i></th>
+        <!-- <th>Image</th> -->
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let obj of UsersList |orderBy:key :reverse | paginate:{itemsPerPage:10,currentPage:p}; let i=index;" >
+        <td style="width: 2px;">{{i+1}}</td>
+        <td>{{obj.user_Name}}</td>
+        <td>{{obj.name}}</td>
+        <td>{{obj.gender}}</td>
+        <td>{{obj.email}}</td>
+        <!-- <td>{{obj.sellerActivated}}</td> -->
+
+
+        <td *ngIf="obj.sellerActivated;else falsee ">Seller/Buyer</td>
+        <ng-template #falsee>
+          <td>Buyer</td>
+        </ng-template>
+        
+       
+    
+       <td> 
+      <div class="row">
+
+        <div style="padding: 4px;">
+         
+      <i class="fa fa-eye" aria-hidden="true" style="font-size:18px;color:rgb(255, 0, 0)" title="Upload Image" [routerLink]="['UserProfile',obj.user_id]" ></i>
+      <button (click)="updatestatus(obj.user_id)" *ngIf="!obj.status" class=" btn btn-default-outline btn-xs"><img src="assets/images/off.png" title="Active Vendor" ></button>  
+      <button (click)="updatestatus(obj.user_id)" *ngIf="obj.status" class="btn btn-default-outline"><img src="assets/images/on.png" title="DeActive Vendor" ></button> &nbsp;
+  
+      </div>
+     
+    </div></td>
+      </tr>
+     
+      </tbody>
+    
+    </table>
+    <div class="row">
+      <div style="right: 10%;">
+        <pagination-controls (pageChange)="p=$event"></pagination-controls>
+    </div>                
+  </div>
+  </div>
+</app-card>
+<!-- Hover table card end -->
+      </div>
+    </div>
+
+
+  
